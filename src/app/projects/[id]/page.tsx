@@ -20,6 +20,8 @@ interface Agent {
   created_at: string;
   system_prompt?: string;
   primary_color?: string;
+  rate_limit_enabled?: boolean;
+  is_active?: boolean;
 }
 
 interface Provider {
@@ -64,7 +66,7 @@ export default function ProjectDetailPage() {
   // Edit Modal State
   const [showEditModal, setShowEditModal] = useState(false);
   const [editAgent, setEditAgent] = useState<any>(null);
-  const [editForm, setEditForm] = useState({ name: '', systemPrompt: '', model: '', providerId: '', primaryColor: '#2563EB' });
+  const [editForm, setEditForm] = useState({ name: '', systemPrompt: '', model: '', providerId: '', primaryColor: '#2563EB', rateLimitEnabled: true, isActive: true });
   
   // Model selection state
   const [availableModels, setAvailableModels] = useState<string[]>([]);
@@ -225,7 +227,9 @@ export default function ProjectDetailPage() {
       systemPrompt: agent.system_prompt || '',
       model: agent.model,
       providerId: agent.provider_id,
-      primaryColor: agent.primary_color || '#2563EB'
+      primaryColor: agent.primary_color || '#2563EB',
+      rateLimitEnabled: agent.rate_limit_enabled !== false,
+      isActive: agent.is_active !== false
     });
     setShowEditModal(true);
   };
@@ -361,7 +365,12 @@ export default function ProjectDetailPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {agents.map((agent) => (
-              <div key={agent.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+              <div key={agent.id} className={`bg-white p-6 rounded-xl shadow-sm border ${agent.is_active === false ? 'border-red-200 bg-red-50' : 'border-gray-200'} hover:shadow-md transition-all relative overflow-hidden`}>
+                {agent.is_active === false && (
+                  <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold uppercase tracking-wider">
+                    Disabled
+                  </div>
+                )}
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 text-xl">
                     🤖
@@ -721,6 +730,38 @@ export default function ProjectDetailPage() {
                       pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
                     />
                   </div>
+                </div>
+
+                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-100">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Agent Status</label>
+                    <p className="text-xs text-gray-500">Enable or disable this agent</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer"
+                      checked={editForm.isActive}
+                      onChange={(e) => setEditForm({ ...editForm, isActive: e.target.checked })}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Rate Limiting</label>
+                    <p className="text-xs text-gray-500">Limit to 10 msgs/min to prevent abuse</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer"
+                      checked={editForm.rateLimitEnabled}
+                      onChange={(e) => setEditForm({ ...editForm, rateLimitEnabled: e.target.checked })}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
                 </div>
 
                 <div>
