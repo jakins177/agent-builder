@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Use absolute path to project directory
-const LOG_DIR = '/home/jakins1777/.openclaw/workspace/projects/agent-builder/logs';
+const LOG_DIR = path.join(process.cwd(), 'logs');
 const LOG_FILE = path.join(LOG_DIR, 'app.log');
 
 // Ensure log directory exists
