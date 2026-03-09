@@ -90,7 +90,7 @@ export default function AgentsPage() {
     }
     fetchProviders();
     fetchProjects();
-    fetchAgents(projectId);
+    fetchAgents(projectId || undefined);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
