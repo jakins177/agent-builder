@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     // Rate Limiting Check
     if (agent.rate_limit_enabled) {
       const clientIp = request.headers.get('x-forwarded-for') || 'unknown';
-      if (!checkRateLimit(clientIp)) {
+      if (!checkRateLimit(request, agentId).allowed) {
         return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 });
       }
     }
