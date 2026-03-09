@@ -1,7 +1,7 @@
 'use client';
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface Message {
   created_at: string;
 }
 
-export default function HistoryPage() {
+function HistoryContent() {
   const searchParams = useSearchParams();
   const agentId = searchParams.get('agentId');
   
@@ -135,4 +135,4 @@ export default function HistoryPage() {
       </main>
     </div>
   );
-}
+export default function Page() { return <Suspense fallback={<div>Loading...</div>}><HistoryContent /></Suspense> }

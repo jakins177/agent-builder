@@ -1,7 +1,7 @@
 'use client';
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ interface Message {
   timestamp: number;
 }
 
-export default function ChatPage() {
+function ChatContent() {
   const searchParams = useSearchParams();
   const agentId = searchParams.get('agentId');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -194,4 +194,4 @@ export default function ChatPage() {
       </main>
     </div>
   );
-}
+export default function Page() { return <Suspense fallback={<div>Loading...</div>}><ChatContent /></Suspense> }
