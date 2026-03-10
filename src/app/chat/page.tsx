@@ -194,4 +194,5 @@ function ChatContent() {
       </main>
     </div>
   );
-export default function Page() { return <Suspense fallback={<div>Loading...</div>}><ChatContent /></Suspense> }
+}
+export default function Page() { return <Suspense fallback={<div>Loading...</div>}><ChatContent /></Suspense>; }

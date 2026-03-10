@@ -135,4 +135,5 @@ function HistoryContent() {
       </main>
     </div>
   );
-export default function Page() { return <Suspense fallback={<div>Loading...</div>}><HistoryContent /></Suspense> }
+}
+export default function Page() { return <Suspense fallback={<div>Loading...</div>}><HistoryContent /></Suspense>; }
