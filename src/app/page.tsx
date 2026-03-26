@@ -43,7 +43,7 @@ export default function HomePage() {
       <Navigation />
       
       <main className="max-w-7xl mx-auto py-12 px-4">
-        <h1 className="text-4xl font-bold text-center mb-8">🤖 Agent Builder MVP</h1>
+        <h1 className="text-4xl font-bold text-center mb-8">🤖 Levo Genesis AI</h1>
         
         {loading && (
           <div className="bg-blue-50 p-4 rounded-lg mb-8 text-center">

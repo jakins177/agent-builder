@@ -1,6 +1,6 @@
 /**
  * Database schema setup
- * Creates the required tables for the Agent Builder
+ * Creates the required tables for the Levo Genesis AI
  */
 
 import { getPool } from './db';
